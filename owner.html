@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080808">
+
+  <title>Studio Admin | Sanjay Photo Studio & Films</title>
+
+  <link rel="stylesheet" href="css/owner.css">
+</head>
+
+<body>
+
+  <!-- LOGIN SECTION -->
+  <section id="loginSection" class="login-section">
+    <div class="login-card">
+      <div class="admin-logo">SANJAY</div>
+      <p class="admin-subtitle">PHOTO STUDIO & FILMS</p>
+
+      <h1>Owner Login</h1>
+      <p>Authorized Studio Administration</p>
+
+      <button type="button" id="loginButton">
+        SIGN IN WITH GOOGLE
+      </button>
+
+      <p id="loginMessage" class="message"></p>
+    </div>
+  </section>
+
+
+  <!-- ADMIN DASHBOARD -->
+  <div id="adminDashboard" hidden>
+
+    <header class="admin-header">
+      <div>
+        <h1>SANJAY <span>STUDIO</span></h1>
+        <small>OWNER CONTROL PANEL</small>
+      </div>
+
+      <div class="admin-account">
+        <span id="ownerEmail">Owner</span>
+        <button type="button" id="logoutButton">
+          LOGOUT
+        </button>
+      </div>
+    </header>
+
+
+    <main class="admin-container">
+
+      <section class="welcome-section">
+        <div>
+          <p class="gold-text">STUDIO MANAGEMENT</p>
+          <h2>Owner Dashboard</h2>
+          <p>Manage your bookings, services and studio finances.</p>
+        </div>
+      </section>
+
+
+      <!-- DASHBOARD NAVIGATION -->
+      <nav class="admin-nav">
+        <button type="button" data-section="overview"
+          class="nav-button active">Overview</button>
+
+        <button type="button" data-section="bookings"
+          class="nav-button">Bookings</button>
+
+        <button type="button" data-section="calendar"
+          class="nav-button">Calendar</button>
+
+        <button type="button" data-section="pricing"
+          class="nav-button">Services & Pricing</button>
+
+        <button type="button" data-section="finance"
+          class="nav-button">Finance</button>
+      </nav>
+
+
+      <!-- OVERVIEW -->
+      <section id="overview" class="admin-section">
+
+        <h2>Dashboard Overview</h2>
+
+        <div class="stats-grid">
+
+          <div class="stat-card">
+            <p>Total Bookings</p>
+            <h3 id="totalBookings">0</h3>
+          </div>
+
+          <div class="stat-card">
+            <p>Pending Bookings</p>
+            <h3 id="pendingBookings">0</h3>
+          </div>
+
+          <div class="stat-card">
+            <p>Confirmed Bookings</p>
+            <h3 id="confirmedBookings">0</h3>
+          </div>
+
+          <div class="stat-card">
+            <p>Completed Bookings</p>
+            <h3 id="completedBookings">0</h3>
+          </div>
+
+        </div>
+
+        <div class="panel">
+          <h3>Recent Bookings</h3>
+
+          <div id="recentBookings">
+            <p>No booking records available.</p>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- BOOKING MANAGEMENT -->
+      <section id="bookings" class="admin-section" hidden>
+
+        <h2>Booking Management</h2>
+
+        <div class="filter-bar">
+          <input type="search" id="bookingSearch"
+            placeholder="Search customer / booking ID">
+
+          <select id="bookingFilter">
+            <option value="all">All Bookings</option>
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        <div id="bookingsList">
+          <p>No bookings found.</p>
+        </div>
+
+
+        <!-- BOOKING DETAILS -->
+        <div id="bookingDetails" class="panel" hidden>
+
+          <h3>Booking Details</h3>
+
+          <div id="bookingDetailsContent"></div>
+
+          <div class="field">
+            <label for="bookingStatus">Booking Status</label>
+            <select id="bookingStatus">
+              <option value="Pending">Pending</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="adminTotal">Final Total Amount (₹)</label>
+            <input type="number" id="adminTotal"
+              min="0" step="1" placeholder="Enter total amount">
+          </div>
+
+          <div class="field">
+            <label for="advanceAmount">Advance Payment (₹)</label>
+            <input type="number" id="advanceAmount"
+              min="0" step="1" placeholder="Enter advance payment">
+          </div>
+
+          <div class="payment-summary">
+            <div>
+              <span>Total Amount</span>
+              <strong id="financeTotal">₹0</strong>
+            </div>
+
+            <div>
+              <span>Advance Received</span>
+              <strong id="financeAdvance">₹0</strong>
+            </div>
+
+            <div>
+              <span>Remaining Amount</span>
+              <strong id="financeRemaining">₹0</strong>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="paymentStatus">Payment Status</label>
+            <select id="paymentStatus">
+              <option value="Unpaid">Unpaid</option>
+              <option value="Partial">Partial</option>
+              <option value="Paid">Paid</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="paymentNote">Payment Note</label>
+            <textarea id="paymentNote"
+              rows="2" placeholder="Payment details"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="adminNotes">Private Admin Notes</label>
+            <textarea id="adminNotes"
+              rows="3" placeholder="Internal studio notes"></textarea>
+          </div>
+
+          <button type="button" id="addPaymentButton">
+            RECORD PAYMENT
+          </button>
+
+          <button type="button" id="saveBookingButton">
+            SAVE BOOKING CHANGES
+          </button>
+
+          <h3>Payment History</h3>
+          <div id="paymentHistory">
+            No payment records.
+          </div>
+
+          <button type="button" id="deleteBookingButton">
+            DELETE BOOKING
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- CALENDAR -->
+      <section id="calendar" class="admin-section" hidden>
+
+        <h2>Booking Calendar</h2>
+
+        <div class="panel">
+          <label for="calendarDate">Select Date</label>
+
+          <input type="date" id="calendarDate">
+
+          <div id="calendarBookings">
+            <p>Select a date to view bookings.</p>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- SERVICES & PRICING -->
+      <section id="pricing" class="admin-section" hidden>
+
+        <h2>Services & Pricing</h2>
+
+        <p class="section-description">
+          Only authorized studio owners can manage service prices.
+        </p>
+
+        <div class="panel">
+
+          <div class="field">
+            <label for="priceEvent">Select Event Type</label>
+
+            <select id="priceEvent">
+              <option value="Wedding">Wedding</option>
+              <option value="Barase">Barase</option>
+              <option value="Baby Shower">Baby Shower</option>
+              <option value="Dohale Jevan">Dohale Jevan</option>
+              <option value="Birthday">Birthday</option>
+              <option value="Shop Opening">Shop Opening</option>
+              <option value="Car Delivery">Car Delivery</option>
+              <option value="Other Events">Other Events</option>
+            </select>
+          </div>
+
+          <div id="priceServices">
+
+            <p>Select an event to manage its service prices.</p>
+
+          </div>
+
+          <button type="button" id="savePricesButton">
+            SAVE SERVICE PRICES
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- FINANCE -->
+      <section id="finance" class="admin-section" hidden>
+
+        <h2>Studio Finance</h2>
+
+        <div class="stats-grid">
+
+          <div class="stat-card">
+            <p>Total Booking Value</p>
+            <h3 id="financeBookingTotal">₹0</h3>
+          </div>
+
+          <div class="stat-card">
+            <p>Total Advance Received</p>
+            <h3 id="financeAdvanceTotal">₹0</h3>
+          </div>
+
+          <div class="stat-card">
+            <p>Total Remaining</p>
+            <h3 id="financeRemainingTotal">₹0</h3>
+          </div>
+
+        </div>
+
+        <div class="panel">
+          <h3>Payment Records</h3>
+
+          <div id="financeRecords">
+            <p>No finance records available.</p>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <footer class="admin-footer">
+      <p>© 2026 Sanjay Photo Studio & Films</p>
+      <small>Private Owner Administration Panel</small>
+    </footer>
+
+  </div>
+
+
+  <script type="module" src="js/owner.js"></script>
+
+</body>
+</html>
