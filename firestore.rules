@@ -1,0 +1,68 @@
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isOwner() {
+      return request.auth != null
+        && exists(
+          /databases/$(database)/documents/owners/$(request.auth.uid)
+        )
+        && get(
+          /databases/$(database)/documents/owners/$(request.auth.uid)
+        ).data.active == true;
+    }
+
+    // Owner verification
+    match /owners/{userId} {
+      allow read: if request.auth != null
+        && request.auth.uid == userId;
+      allow write: if false;
+    }
+
+    // Public service prices
+    match /settings/servicePrices {
+      allow read: if true;
+      allow write: if isOwner();
+    }
+
+    // Customer bookings
+    match /bookings/{bookingId} {
+      allow create: if request.resource.data.status == "Pending"
+        && request.resource.data.keys().hasAll([
+          "fullName",
+          "contactNumber",
+          "whatsappNumber",
+          "address",
+          "eventType",
+          "dates",
+          "services",
+          "status",
+          "createdAt"
+        ])
+        && request.resource.data.keys().hasOnly([
+          "fullName",
+          "contactNumber",
+          "whatsappNumber",
+          "address",
+          "eventType",
+          "weddingType",
+          "otherEventTiming",
+          "dates",
+          "services",
+          "enquiry",
+          "additionalMessage",
+          "status",
+          "createdAt"
+        ]);
+
+      allow read, update, delete: if isOwner();
+
+      // Payment history
+      match /payments/{paymentId} {
+        allow read, write: if isOwner();
+      }
+    }
+  }
+}
