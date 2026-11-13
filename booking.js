@@ -1,4 +1,12 @@
 
+import { db, firebaseReady } from "./firebase.js";
+
+import {
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+
 const $ = (id) => document.getElementById(id);
 
 const eventGrid = $("eventGrid");
@@ -466,14 +474,50 @@ $("whatsappButton").addEventListener("click", () => {
 
 // FINAL SUBMISSION - BACKEND CONNECTION TO BE ADDED
 
-$("bookingForm").addEventListener("submit", (event) => {
+
+$("bookingForm").addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  alert(
-    "Booking system setup is not complete yet. " +
-    "Firebase connection will be added in the next stage."
-  );
+  if (!firebaseReady || !db) {
+    alert("Firebase setup is pending. Please try again later.");
+    return;
+  }
+
+  const data = getBookingData();
+
+  const booking = {
+    fullName: data.fullName,
+    contactNumber: data.contact,
+    whatsappNumber: data.whatsapp,
+    address: data.address,
+    eventType: data.eventType,
+    weddingType: data.weddingType || "",
+    otherEventTiming: data.eventTiming || "",
+    dates: data.dates,
+    services: data.services,
+    enquiry: data.requirements || "",
+    additionalMessage: data.additionalMessage || "",
+    status: "Pending",
+    createdAt: serverTimestamp()
+  };
+
+  try {
+    const result = await addDoc(
+      collection(db, "bookings"),
+      booking
+    );
+
+    alert(
+      "Booking enquiry submitted successfully!\nReference: " +
+      result.id
+    );
+
+  } catch (error) {
+    console.error("Booking error:", error);
+    alert("Booking could not be submitted. Please try again.");
+  }
 });
+
 
 // OTHER EVENT TIMING
 
